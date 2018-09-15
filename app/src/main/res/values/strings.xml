@@ -2,4 +2,5 @@
     <string name="app_name">Estacionamiento Asistido</string>
     <string name="Distancia">Distancia</string>
     <string name="ejemploDistancia">200 cm</string>
+    <string name="timer">00:00</string>
 </resources>

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.edu.unlp.info.pacamag.estacionamientoasistido">
 
-    /* *** Activa los permisos necesarios para conectarse por BlueTooth *** */
+    <!--- Activa los permisos necesarios para conectarse por BlueTooth  -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
@@ -23,3 +23,15 @@
     </application>
 
 </manifest>
+
+
+    <!---
+
+    Crear base de datos para almacenar los tiempos
+    conectat bluetooht con la app
+
+
+    -->
+
+
+
