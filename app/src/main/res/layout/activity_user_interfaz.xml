@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserInterfaz">
+
+
+    <ImageView
+        android:id="@+id/autoImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/auto" />
+
+    <ImageView
+        android:id="@+id/ledLeftImagen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/autoImagen"
+        android:layout_toStartOf="@+id/autoImagen"
+        android:src="@drawable/led_off" />
+
+    <TextView
+        android:id="@+id/distanciaLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/autoImagen"
+        android:layout_toStartOf="@+id/ledLeftImagen"
+        android:text="@string/Distancia" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/distanciaLeft"
+        android:layout_below="@+id/distanciaLeft"
+        android:layout_marginTop="10dp"
+        android:text="@string/ejemploDistancia" />
+
+
+    <ImageView
+        android:id="@+id/ledRightImagen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/autoImagen"
+        android:layout_toEndOf="@+id/autoImagen"
+        android:src="@drawable/led_off" />
+
+    <TextView
+        android:id="@+id/distanciaRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/autoImagen"
+        android:layout_toEndOf="@+id/ledRightImagen"
+        android:text="@string/Distancia" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/distanciaRight"
+        android:layout_below="@+id/distanciaRight"
+        android:layout_marginTop="10dp"
+        android:text="@string/ejemploDistancia" />
+
+
+
+    <ImageView
+        android:id="@+id/ledBackImagen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/autoImagen"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/led_off" />
+
+    <TextView
+        android:id="@+id/distanciaBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ledBackImagen"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/Distancia" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/distanciaBack"
+        android:layout_toRightOf="@id/distanciaBack"
+        android:layout_marginLeft="10dp"
+        android:text="@string/ejemploDistancia" />
+
+
+
+</RelativeLayout>
