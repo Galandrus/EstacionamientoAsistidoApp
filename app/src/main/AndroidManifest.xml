@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.edu.unlp.info.pacamag.estacionamientoasistido">
 
-    <!--- Activa los permisos necesarios para conectarse por BlueTooth  -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- - Activa los permisos necesarios para conectarse por BlueTooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -13,25 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserInterfaz">
+        <activity android:name=".actividades.UserInterfaz">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".actividades.ShowDevices"></activity>
     </application>
 
-</manifest>
-
-
-    <!---
+</manifest><!--
+-
 
     Crear base de datos para almacenar los tiempos
     conectat bluetooht con la app
-
-
-    -->
-
-
-
+-->

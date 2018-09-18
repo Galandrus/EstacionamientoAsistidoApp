@@ -1,7 +1,9 @@
-package ar.edu.unlp.info.pacamag.estacionamientoasistido;
+package ar.edu.unlp.info.pacamag.estacionamientoasistido.actividades;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
 
 public class UserInterfaz extends AppCompatActivity {
 
