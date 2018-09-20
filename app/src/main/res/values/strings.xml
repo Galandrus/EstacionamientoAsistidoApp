@@ -4,10 +4,11 @@
     <string name="ejemploDistancia">200 cm</string>
     <string name="timer">00:00</string>
     <string name="escanear">Escanear</string>
-    <string name="escaneando">Escaneando...</string>
+    <string name="detener">Detener</string>
     <string name="tituloDispositivos">Dispositivos</string>
     <string name="nombreDevice">Nombre Dispositivo</string>
     <string name="macDevice">MAC ADDRESS</string>
+
 
 
 </resources>

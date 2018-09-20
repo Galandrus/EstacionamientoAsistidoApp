@@ -20,22 +20,34 @@
         android:layout_height="1dp"
         android:background="#000"/>
 
-    <ToggleButton
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="@string/escanear"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#fff"
-        android:textSize="40dp"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
         android:id="@+id/idScan"
-        android:layout_gravity="center_horizontal"
-        android:textOn="@string/escaneando"
-        android:textOff="@string/escanear" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/escanear"
+        android:layout_weight="1"
+        android:layout_margin="5dp"/>
+    <Button
+        android:id="@+id/idStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/detener"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:enabled="false"/>
+
+</LinearLayout>
 
     <android.support.v7.widget.RecyclerView
     android:id="@+id/idRecyclerDevice"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp" />
+    android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"/>
 
 </LinearLayout>

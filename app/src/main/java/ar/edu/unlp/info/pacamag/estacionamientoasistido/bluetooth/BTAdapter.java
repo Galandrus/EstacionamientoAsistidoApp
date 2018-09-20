@@ -4,76 +4,55 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.entidades.DeviceItem;
 
 
 public class BTAdapter {
 
-    private BluetoothAdapter adapter;
-    public static int REQUEST_BLUETOOTH = 1;
-    private ArrayList<DeviceItem> deviceItemList;
+    private BluetoothAdapter btAdapter;
 
-    private final BroadcastReceiver bReciever = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Create a new device item
-                DeviceItem newDevice = new DeviceItem(device.getName(), device.getAddress(), "false");
-                // Add it to our adapter
-                deviceItemList.add(newDevice);
-            }
-        }
-    };
 
-    public BTAdapter(Context context){
+    // Identificador unico de servicio - SPP UUID
+    private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+
+    public BTAdapter(){
         // Asigna a adapter el adaptor por defecto del telefono
-        this.adapter = BluetoothAdapter.getDefaultAdapter();
-        SoportaBT(context);
+        this.btAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     public BluetoothAdapter getAdapter(){
-        return adapter;
+        return btAdapter;
     }
 
-    public ArrayList<DeviceItem> getDeviceItemList() {
-        return deviceItemList;
-    }
 
-    // Si su telefono no soporta Bluetooht le aviso que no puede usar la app.
-    public void SoportaBT(Context context){
-        if (adapter == null) {
-            new AlertDialog.Builder(context)
-                    .setTitle("No compatible")
-                    .setMessage("Su telefono no soporta Bluetooth")
-                    .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            System.exit(0);
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
+    public boolean SoportaBT(){
+        if(btAdapter==null) return false;
+        else return true;
     }
 
     public void ActivarBluetooth(Activity activity){
-        if (!adapter.isEnabled()) {
-            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            activity.startActivityForResult(enableBT, REQUEST_BLUETOOTH);
+        if (!btAdapter.isEnabled()){
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            activity.startActivityForResult(enableBtIntent, 1);
         }
     }
 
-    public void ObtenerListaDispositivosConocidos (){
-        Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
+    public void ObtenerListaDispositivos(ArrayList<DeviceItem> deviceItemList){
+        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 DeviceItem newDevice= new DeviceItem(device.getName(),device.getAddress(),"false");
@@ -82,16 +61,49 @@ public class BTAdapter {
         }
     }
 
+    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException
+    {
+        //crea un conexion de salida segura para el dispositivo
+        //usando el servicio UUID
+        return device.createRfcommSocketToServiceRecord(BTMODULEUUID);
+    }
 
-    public void ObtenerListaDispositivosDesconocidos( Activity activity, boolean isChecked) {
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        if (isChecked) {
-            deviceItemList.clear();
-            activity.registerReceiver(bReciever, filter);
-            adapter.startDiscovery();
-        } else {
-            activity.unregisterReceiver(bReciever);
-            adapter.cancelDiscovery();
+    public BluetoothDevice getDeviceFromMac(String address){
+        //Setea la direccion MAC
+        return btAdapter.getRemoteDevice(address);
+    }
+
+    public boolean conectarSocket(BluetoothDevice device,BluetoothSocket btSocket ){
+        try
+        {
+            btSocket = createBluetoothSocket(device);
+        } catch (IOException e) {
+            return false;
+        }
+
+        // Establece la conexión con el socket Bluetooth.
+        try
+        {
+            btSocket.connect();
+            return true;
+        } catch (IOException e) {
+            try {
+                btSocket.close();
+                return false;
+            } catch (IOException e2) {
+                return false;
+            }
+        }
+    }
+
+    public boolean desconectarSocket (BluetoothSocket btSocket ){
+        try
+        { // Cuando se sale de la aplicación esta parte permite
+            // que no se deje abierto el socket
+            btSocket.close();
+            return true;
+        } catch (IOException e2) {
+            return false;
         }
     }
 
