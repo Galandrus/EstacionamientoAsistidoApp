@@ -73,25 +73,26 @@ public class BTAdapter {
         return btAdapter.getRemoteDevice(address);
     }
 
-    public boolean conectarSocket(BluetoothDevice device,BluetoothSocket btSocket ){
+    public BluetoothSocket conectarSocket(BluetoothDevice device){
+        BluetoothSocket btSocket;
         try
         {
             btSocket = createBluetoothSocket(device);
         } catch (IOException e) {
-            return false;
+            return null;
         }
 
         // Establece la conexión con el socket Bluetooth.
         try
         {
             btSocket.connect();
-            return true;
+            return btSocket;
         } catch (IOException e) {
             try {
                 btSocket.close();
-                return false;
+                return null;
             } catch (IOException e2) {
-                return false;
+                return null;
             }
         }
     }

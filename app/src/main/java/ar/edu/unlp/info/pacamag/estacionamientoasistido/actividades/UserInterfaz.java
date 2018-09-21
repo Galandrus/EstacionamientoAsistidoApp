@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ public class UserInterfaz extends AppCompatActivity {
 
     TextView timer, distanciaLeft, distanciaRight, distanciaFront;
     ImageView ledLeft, ledRight, ledFront;
+    Button conectar;
 
     private BTAdapter btAdapter;
     private BluetoothSocket btSocket;
@@ -30,6 +33,7 @@ public class UserInterfaz extends AppCompatActivity {
     Handler bluetoothIn;
     final int handlerState = 0;
     private StringBuilder recDataString = new StringBuilder();
+    private BluetoothDevice device;
 
 
     @SuppressLint("HandlerLeak")
@@ -46,8 +50,10 @@ public class UserInterfaz extends AppCompatActivity {
         ledLeft=findViewById(R.id.idLedLeftImagen);
         ledRight=findViewById(R.id.idLedRightImagen);
         ledFront=findViewById(R.id.idLedFrontImagen);
+        conectar = findViewById(R.id.idConectarBT);
 
         btAdapter = new BTAdapter();
+        device = recuperarDispositivo();
 
         bluetoothIn = new Handler() {
 //////////////////////////////// VER COMO RECIBIR LAS COSAS /////////////////////
@@ -74,6 +80,12 @@ public class UserInterfaz extends AppCompatActivity {
             }
         };
 /////////////////////////////////////////////////////////////////////////////////////
+        conectar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConectarConDispositivo(device);
+            }
+        });
     }
 
     private void setearTextoVista(String datos, int i) {
@@ -115,16 +127,27 @@ public class UserInterfaz extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ConectarConDispositivo(device);
+    }
+
+    private void ConectarConDispositivo( BluetoothDevice device) {
+        btSocket = btAdapter.conectarSocket(device);
+        if (btSocket!=null) {
+            MyConexionBT = new ConnectedThread(btSocket);
+            MyConexionBT.start();
+        } else{
+            Toast.makeText(this, "Fallo la conexion del socket", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private BluetoothDevice recuperarDispositivo() {
         //Consigue la direccion MAC desde DeviceListActivity via intent
         Intent intent = getIntent();
         //Consigue la direccion MAC desde DeviceListActivity via EXTRA
         address = intent.getStringExtra(ShowDevices.EXTRA_DEVICE_ADDRESS);
         //Setea la direccion MAC
-        BluetoothDevice device = btAdapter.getDeviceFromMac(address);
+        return btAdapter.getDeviceFromMac(address);
 
-        btAdapter.conectarSocket(device,btSocket);
-        MyConexionBT = new ConnectedThread(btSocket);
-        MyConexionBT.start();
     }
 
     public void onPause()
