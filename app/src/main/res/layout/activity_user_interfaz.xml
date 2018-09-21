@@ -8,14 +8,14 @@
 
 
     <ImageView
-        android:id="@+id/autoImagen"
+        android:id="@+id/idAutoImagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/auto" />
 
     <TextView
-        android:id="@+id/timer"
+        android:id="@+id/idTimer"
         style="@style/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,82 +25,91 @@
         android:text="@string/timer" />
 
     <ImageView
-        android:id="@+id/ledLeftImagen"
+        android:id="@+id/idLedLeftImagen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_above="@+id/autoImagen"
-        android:layout_toStartOf="@+id/autoImagen"
+        android:layout_above="@+id/idAutoImagen"
+        android:layout_toStartOf="@+id/idAutoImagen"
         android:src="@drawable/led_off" />
 
     <TextView
-        android:id="@+id/distanciaLeft"
+        android:id="@+id/idDistanciaLeftTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/autoImagen"
-        android:layout_toStartOf="@+id/ledLeftImagen"
-        android:text="@string/Distancia" />
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/idAutoImagen"
+        android:text="@string/Distancia"
+        android:layout_margin="5dp"/>
 
     <TextView
+        android:id="@+id/idDistanciaLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/distanciaLeft"
-        android:layout_below="@+id/distanciaLeft"
+        android:layout_alignEnd="@+id/idDistanciaLeftTitulo"
+        android:layout_below="@+id/idDistanciaLeftTitulo"
         android:layout_marginTop="10dp"
-        android:text="@string/ejemploDistancia" />
+        android:text="@string/ejemploDistancia"
+        android:layout_margin="5dp"/>
 
 
     <ImageView
-        android:id="@+id/ledRightImagen"
+        android:id="@+id/idLedRightImagen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_above="@+id/autoImagen"
-        android:layout_toEndOf="@+id/autoImagen"
+        android:layout_above="@+id/idAutoImagen"
+        android:layout_toEndOf="@+id/idAutoImagen"
         android:src="@drawable/led_off" />
 
     <TextView
-        android:id="@+id/distanciaRight"
+        android:id="@+id/idDistanciaRightTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/autoImagen"
-        android:layout_toEndOf="@+id/ledRightImagen"
-        android:text="@string/Distancia" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/idAutoImagen"
+        android:text="@string/Distancia"
+        android:layout_margin="5dp"/>
 
     <TextView
+        android:id="@+id/idDistanciaRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/distanciaRight"
-        android:layout_below="@+id/distanciaRight"
+        android:layout_alignEnd="@+id/idDistanciaRightTitulo"
+        android:layout_below="@+id/idDistanciaRightTitulo"
         android:layout_marginTop="10dp"
-        android:text="@string/ejemploDistancia" />
+        android:text="@string/ejemploDistancia"
+        android:layout_margin="5dp"/>
 
 
 
     <ImageView
-        android:id="@+id/ledBackImagen"
+        android:id="@+id/idLedFrontImagen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/autoImagen"
+        android:layout_below="@+id/idAutoImagen"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/led_off" />
 
     <TextView
-        android:id="@+id/distanciaBack"
+        android:id="@+id/idDistanciaFrontTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ledBackImagen"
+        android:layout_below="@+id/idLedFrontImagen"
         android:layout_marginStart="130dp"
         android:layout_marginTop="10dp"
-        android:text="@string/Distancia" />
+        android:text="@string/Distancia"
+/>
 
     <TextView
+        android:id="@+id/idDistanciaFront"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/distanciaBack"
-        android:layout_toRightOf="@id/distanciaBack"
+        android:layout_alignTop="@+id/idDistanciaFrontTitulo"
+        android:layout_toRightOf="@id/idDistanciaFrontTitulo"
         android:layout_marginLeft="10dp"
-        android:text="@string/ejemploDistancia" />
+        android:text="@string/ejemploDistancia"
+/>
 
 
 

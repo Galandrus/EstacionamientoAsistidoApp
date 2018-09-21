@@ -24,7 +24,7 @@
             android:textSize="15sp"/>
 
         <View
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="#000"
             android:layout_margin="10dp"/>
