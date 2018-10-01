@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UserInterfazFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+        <ImageView
+            android:id="@+id/idAutoImagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/auto" />
+
+        <TextView
+            android:id="@+id/idTimer"
+            style="@style/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/timer2"
+            android:text="@string/timer" />
+
+        <ImageView
+            android:id="@+id/idLedLeftImagen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/idAutoImagen"
+            android:layout_toStartOf="@+id/idAutoImagen"
+            android:src="@drawable/led_off" />
+
+        <TextView
+            android:id="@+id/idDistanciaLeftTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/idAutoImagen"
+            android:text="@string/Distancia"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/idDistanciaLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/idDistanciaLeftTitulo"
+            android:layout_below="@+id/idDistanciaLeftTitulo"
+            android:layout_marginTop="10dp"
+            android:text="@string/ejemploDistancia"
+            android:layout_margin="5dp"/>
+
+
+        <ImageView
+            android:id="@+id/idLedRightImagen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/idAutoImagen"
+            android:layout_toEndOf="@+id/idAutoImagen"
+            android:src="@drawable/led_off" />
+
+        <TextView
+            android:id="@+id/idDistanciaRightTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/idAutoImagen"
+            android:text="@string/Distancia"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/idDistanciaRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/idDistanciaRightTitulo"
+            android:layout_below="@+id/idDistanciaRightTitulo"
+            android:layout_marginTop="10dp"
+            android:text="@string/ejemploDistancia"
+            android:layout_margin="5dp"/>
+
+
+
+        <ImageView
+            android:id="@+id/idLedFrontImagen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/idAutoImagen"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/led_off" />
+
+        <TextView
+            android:id="@+id/idDistanciaFrontTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/idLedFrontImagen"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/Distancia"
+            />
+
+        <TextView
+            android:id="@+id/idDistanciaFront"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/idDistanciaFrontTitulo"
+            android:layout_toRightOf="@id/idDistanciaFrontTitulo"
+            android:layout_marginLeft="10dp"
+            android:text="@string/ejemploDistancia"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/idConectarBT"
+            android:text="Conectar"/>
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>

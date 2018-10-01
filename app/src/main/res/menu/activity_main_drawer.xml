@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/idSeleccionarDispositivos"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/seleccionarDispositivos" />
+        <item
+            android:id="@+id/idEstacionamiento"
+            android:icon="@drawable/ic_menu_estacionar"
+            android:title="@string/estacionamiento" />
+        <item
+            android:id="@+id/idRegistroHistorico"
+            android:icon="@drawable/ic_menu_registro"
+            android:title="@string/registro" />
+        <item
+            android:id="@+id/idCreditos"
+            android:icon="@drawable/ic_menu_creditos"
+            android:title="@string/creditos" />
+
+    </group>
+
+
+</menu>
