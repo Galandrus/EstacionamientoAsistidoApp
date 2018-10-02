@@ -17,6 +17,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="hora">12:24:36</string>
+    <string name="fecha">11/10/1996</string>
+    <string name="horaTexto">Hora</string>
+    <string name="fechaTexto">Fecha</string>
+    <string name="timerTexto">Tiempo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

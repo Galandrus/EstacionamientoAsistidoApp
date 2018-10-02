@@ -1,13 +1,19 @@
 package ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +23,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
+import java.util.Locale;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.actividades.MainActivity;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.bluetooth.BTAdapter;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -268,6 +279,50 @@ public class UserInterfazFragment extends Fragment {
             ConectarConDispositivo(device);
         else
             Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void GuardarRegistro(View view){
+        //instancio la bd
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(context);
+
+        //abro la base para poder editarla
+        SQLiteDatabase db=conn.getWritableDatabase();
+
+        //Agrego Tabla Registro
+        ContentValues valoresRegistro =new ContentValues();
+        valoresRegistro.put(Utilidades.REGISTRO_FECHA, obtenerFecha());
+        valoresRegistro.put(Utilidades.REGISTRO_HORA, obtenerHora());
+        valoresRegistro.put(Utilidades.REGISTRO_TIEMPO, timer.getText().toString());
+
+        try {
+            db.insert(Utilidades.TABLA_REGISTRO,null,valoresRegistro);
+        } catch (IOError e){
+            Toast.makeText(context,"Fallo la inserción en Registro", Toast.LENGTH_SHORT).show();
+        }
+
+        //Aviso que se creo bien
+        Toast.makeText(context,"Se guardo exitosamente", Toast.LENGTH_SHORT).show();
+
+        //Cierro bd
+        db.close();
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String obtenerHora() {
+        SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return hourFormat.format(date);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String obtenerFecha() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     //Crea la clase que permite crear el evento de conexion

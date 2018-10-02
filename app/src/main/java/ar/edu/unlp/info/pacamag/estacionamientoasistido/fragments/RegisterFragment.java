@@ -1,14 +1,35 @@
 package ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.adaptadores.DeviceAdapter;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.adaptadores.RegistroAdapter;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.entidades.DeviceItem;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.entidades.RegistroEstacionamiento;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +50,13 @@ public class RegisterFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    // TODO: Mis Parametros
+    ArrayList<RegistroEstacionamiento> listaRegistros;
+    RecyclerView recyclerRegistro;
+    RegistroAdapter adapter;
+    Activity activity;
+    Context context;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -59,13 +87,46 @@ public class RegisterFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        activity=getActivity();
+        context= getContext();
+
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        View vista = inflater.inflate(R.layout.fragment_register, container, false);
+        listaRegistros=new ArrayList<>();
+        recyclerRegistro = vista.findViewById(R.id.idRegistroRecycler);
+        recyclerRegistro.setLayoutManager(new LinearLayoutManager(context));
+        llenarListaRegistro();
+        adapter = new RegistroAdapter(listaRegistros);
+        recyclerRegistro.setAdapter(adapter);
+      
+
+        return vista;
+    }
+
+    private void llenarListaRegistro() {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(getContext());
+        SQLiteDatabase db = conn.getReadableDatabase();
+        Cursor cursor=db.rawQuery(Utilidades.RECUPERAR_REGISTROS,null);
+        RegistroEstacionamiento auxRegistro;
+
+        if (cursor.moveToFirst()) {
+            auxRegistro = new RegistroEstacionamiento(cursor.getString(0),cursor.getString(1),cursor.getString(2));
+            listaRegistros.add(auxRegistro);
+            while (cursor.moveToNext()) {
+                auxRegistro = new RegistroEstacionamiento(cursor.getString(0),cursor.getString(1),cursor.getString(2));
+                listaRegistros.add(auxRegistro);
+            }
+        } else
+            auxRegistro = new RegistroEstacionamiento("NO","HAY", "REGISTROS");
+            listaRegistros.add(auxRegistro);
+        db.close();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

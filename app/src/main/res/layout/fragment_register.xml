@@ -3,13 +3,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.RegisterFragment"
-    android:background="#557fc2">
+    tools:context=".fragments.RegisterFragment" >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#7738c487">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/timerTexto"
+            style="@style/registroTitulo"
+            android:layout_margin="10dp"
+
+/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="fill_parent"
+            android:background="#000"
+
+            android:layout_weight="0"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fechaTexto"
+            style="@style/registroTitulo"
+            android:layout_margin="10dp"
+/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="fill_parent"
+            android:background="#000"
+
+            android:layout_weight="0"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/horaTexto"
+            style="@style/registroTitulo"
+            android:layout_margin="10dp"
+/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#000"
+/>
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="REGISTROOOOOOO" />
+        android:id="@+id/idRegistroRecycler">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+
+</LinearLayout>
+
 
 </FrameLayout>

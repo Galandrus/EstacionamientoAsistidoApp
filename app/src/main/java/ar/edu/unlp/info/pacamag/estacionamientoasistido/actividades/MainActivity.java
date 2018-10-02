@@ -23,6 +23,7 @@ import ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments.RegisterFragme
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments.ShowDevicesFragment;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments.UserInterfazFragment;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.interfaces.IComunicacionFragment;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IComunicacionFragment,
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         showDevicesFragment = new ShowDevicesFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorFragment,showDevicesFragment).commit();
+
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this);
     }
 
     @Override

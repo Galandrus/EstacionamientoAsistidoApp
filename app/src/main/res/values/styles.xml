@@ -11,9 +11,20 @@
     <style name="timer">
         <item name="android:textSize">50sp</item>
         <item name="android:textColor">@color/colorTimer</item>
-
-
     </style>
+
+    <style name="registroTitulo">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="registroItem">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
