@@ -14,6 +14,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -57,6 +60,7 @@ public class RegisterFragment extends Fragment {
     RegistroAdapter adapter;
     Activity activity;
     Context context;
+    View vista;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -98,22 +102,23 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista = inflater.inflate(R.layout.fragment_register, container, false);
+
+        vista = inflater.inflate(R.layout.fragment_register, container, false);
         listaRegistros=new ArrayList<>();
         recyclerRegistro = vista.findViewById(R.id.idRegistroRecycler);
         recyclerRegistro.setLayoutManager(new LinearLayoutManager(context));
-        llenarListaRegistro();
+        llenarListaRegistro(Utilidades.RECUPERAR_REGISTROS_ORDER_BY_TIEMPO);
         adapter = new RegistroAdapter(listaRegistros);
         recyclerRegistro.setAdapter(adapter);
       
-
+        setHasOptionsMenu(true);
         return vista;
     }
 
-    private void llenarListaRegistro() {
+    private void llenarListaRegistro(String query) {
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(getContext());
         SQLiteDatabase db = conn.getReadableDatabase();
-        Cursor cursor=db.rawQuery(Utilidades.RECUPERAR_REGISTROS,null);
+        Cursor cursor=db.rawQuery(query,null);
         RegistroEstacionamiento auxRegistro;
 
         if (cursor.moveToFirst()) {
@@ -123,9 +128,12 @@ public class RegisterFragment extends Fragment {
                 auxRegistro = new RegistroEstacionamiento(cursor.getString(0),cursor.getString(1),cursor.getString(2));
                 listaRegistros.add(auxRegistro);
             }
-        } else
-            auxRegistro = new RegistroEstacionamiento("NO","HAY", "REGISTROS");
+        } else {
+            auxRegistro = new RegistroEstacionamiento("NO", "HAY", "REGISTROS");
             listaRegistros.add(auxRegistro);
+            auxRegistro = new RegistroEstacionamiento("TIENE", "QUE", "ESTACIONAR");
+            listaRegistros.add(auxRegistro);
+        }
         db.close();
     }
 
@@ -166,5 +174,31 @@ public class RegisterFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.register_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        listaRegistros.clear();
+        switch (id){
+            case R.id.idOrdenarPorFecha :
+
+                llenarListaRegistro(Utilidades.RECUPERAR_REGISTROS_ORDER_BY_FECHA);
+
+                break;
+
+            case R.id.idOrdenarPorTiempo :
+                llenarListaRegistro(Utilidades.RECUPERAR_REGISTROS_ORDER_BY_TIEMPO);
+                break;
+        }
+        adapter.notifyDataSetChanged();
+       return super.onOptionsItemSelected(item);
+
     }
 }

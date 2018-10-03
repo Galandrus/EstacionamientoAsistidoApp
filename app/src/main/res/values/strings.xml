@@ -25,6 +25,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="conectarbt">ConectarBt</string>
+    <string name="ordernar">Ordernar</string>
+    <string name="ordenar_por_tiempo">Ordenar por Tiempo</string>
+    <string name="ordenar_por_fecha">Ordenar por Fecha</string>
+    <string name="guardar_registro">Guardar Registro</string>
 
 
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item
+    android:title="@string/conectarbt"
+    android:id="@+id/idConectarBTMenuOpciones"
+    app:showAsAction="always"
+    android:icon="@drawable/ic_bluetooth_connected"/>
+
+    <item
+        android:title="@string/guardar_registro"
+        android:id="@+id/idGuardarRegistro"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_save"/>
+
+
+</menu>
