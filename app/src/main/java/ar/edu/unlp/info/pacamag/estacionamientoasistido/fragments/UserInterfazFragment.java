@@ -16,6 +16,9 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -59,7 +62,6 @@ public class UserInterfazFragment extends Fragment {
     // TODO: Mis parametros
     TextView timer, distanciaLeft, distanciaRight, distanciaFront;
     ImageView ledLeft, ledRight, ledFront;
-    Button conectar;
 
     private BTAdapter btAdapter;
     private BluetoothSocket btSocket;
@@ -120,7 +122,6 @@ public class UserInterfazFragment extends Fragment {
         ledLeft=vista.findViewById(R.id.idLedLeftImagen);
         ledRight=vista.findViewById(R.id.idLedRightImagen);
         ledFront=vista.findViewById(R.id.idLedFrontImagen);
-        conectar = vista.findViewById(R.id.idConectarBT);
 
         btAdapter = new BTAdapter();
         device = recuperarDispositivo();
@@ -154,16 +155,8 @@ public class UserInterfazFragment extends Fragment {
             }
         };
 /////////////////////////////////////////////////////////////////////////////////////
-        conectar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (device != null)
-                    ConectarConDispositivo(device);
-                else
-                    Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
-            }
-        });
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return vista;
     }
 
@@ -324,6 +317,26 @@ public class UserInterfazFragment extends Fragment {
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.user_interfaz_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (device != null)
+            ConectarConDispositivo(device);
+        else
+            Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
 
     //Crea la clase que permite crear el evento de conexion
     private class ConnectedThread extends Thread

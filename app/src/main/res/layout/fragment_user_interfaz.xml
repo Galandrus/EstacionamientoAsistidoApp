@@ -113,11 +113,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/ejemploDistancia"
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/idConectarBT"
-            android:text="Conectar"/>
+
 
 
 

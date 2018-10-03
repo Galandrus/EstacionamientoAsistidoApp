@@ -8,11 +8,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
     app:showAsAction="always"
     android:icon="@drawable/ic_bluetooth_connected"/>
 
-    <item
-        android:title="@string/guardar_registro"
-        android:id="@+id/idGuardarRegistro"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_save"/>
 
 
 </menu>

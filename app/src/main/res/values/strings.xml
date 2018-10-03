@@ -30,6 +30,12 @@
     <string name="ordenar_por_tiempo">Ordenar por Tiempo</string>
     <string name="ordenar_por_fecha">Ordenar por Fecha</string>
     <string name="guardar_registro">Guardar Registro</string>
+    <string name="nombreMartin">Martín Andrés Galán</string>
+    <string name="nombreCharo">Charo Ares</string>
+    <string name="nombrePabba">Pedro Nicolas Abba</string>
+    <string name="descMartin">Creador, Programador, Codiseñador</string>
+    <string name="descCharo">Codiseñadora y asesora</string>
+    <string name="descPabba">Abbo</string>
 
 
 </resources>
