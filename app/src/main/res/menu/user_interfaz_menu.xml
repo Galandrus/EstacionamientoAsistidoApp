@@ -4,9 +4,16 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 
 <item
     android:title="@string/conectarbt"
-    android:id="@+id/idConectarBTMenuOpciones"
+    android:id="@+id/idBleConectar"
     app:showAsAction="always"
     android:icon="@drawable/ic_bluetooth_connected"/>
+
+    <item
+        android:title="@string/conectarbt"
+        android:id="@+id/idBleDesconectar"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/ic_bluetooth_connected_true"/>
 
 
 

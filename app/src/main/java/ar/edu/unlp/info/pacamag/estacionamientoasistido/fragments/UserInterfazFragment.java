@@ -1,10 +1,13 @@
 package ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,8 +24,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +52,8 @@ import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
  * Use the {@link UserInterfazFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@TargetApi(Build.VERSION_CODES.N)
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class UserInterfazFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,6 +70,10 @@ public class UserInterfazFragment extends Fragment {
     TextView timer, distanciaLeft, distanciaRight, distanciaFront;
     ImageView ledLeft, ledRight, ledFront;
 
+    MenuItem btIcon,btIconConectado;
+
+
+
     private BTAdapter btAdapter;
     private BluetoothSocket btSocket;
     private UserInterfazFragment.ConnectedThread MyConexionBT;
@@ -73,6 +84,7 @@ public class UserInterfazFragment extends Fragment {
     private BluetoothDevice device;
     private Activity activity;
     private Context context;
+    private Menu menu;
 
     public UserInterfazFragment() {
         // Required empty public constructor
@@ -122,16 +134,17 @@ public class UserInterfazFragment extends Fragment {
         ledLeft=vista.findViewById(R.id.idLedLeftImagen);
         ledRight=vista.findViewById(R.id.idLedRightImagen);
         ledFront=vista.findViewById(R.id.idLedFrontImagen);
+        setHasOptionsMenu(true);
+
 
         btAdapter = new BTAdapter();
         device = recuperarDispositivo();
-        if (device != null)
-            ConectarConDispositivo(device);
-        else
-            Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
+
+        //ConectarConDispositivo(device);
 
         bluetoothIn = new Handler() {
             //////////////////////////////// VER COMO RECIBIR LAS COSAS /////////////////////
+
             public void handleMessage(android.os.Message msg) {
                 if (msg.what == handlerState) {
                     String readMessage = (String) msg.obj;
@@ -140,6 +153,8 @@ public class UserInterfazFragment extends Fragment {
                     if (endOfLineIndex > 0) {                                           // Se asegura que haya un mensaje
                         String dataInPrint = recDataString.substring(0, endOfLineIndex);    // Extrae el string
                         char[] arreglo = dataInPrint.toCharArray();
+                        //if(arreglo.equals("o"))
+                           // ledFront.setImageResource(R.drawable.led_on);
                         String datos="";
                         int index = 1;
                         for (int i=0;i<dataInPrint.length();i++){
@@ -147,6 +162,7 @@ public class UserInterfazFragment extends Fragment {
                                 datos+=arreglo[i];
                             } else {
                                 setearTextoVista(datos, index++);
+                                datos="";
                             }
                         }
                         recDataString.delete(0, recDataString.length());      //clear all string data
@@ -156,7 +172,7 @@ public class UserInterfazFragment extends Fragment {
         };
 /////////////////////////////////////////////////////////////////////////////////////
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
+
         return vista;
     }
 
@@ -184,9 +200,18 @@ public class UserInterfazFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (btSocket!= null)
-            btAdapter.desconectarSocket(btSocket);
+        desconectarDispositivo();
     }
+
+    private void desconectarDispositivo() {
+        if (btSocket!= null) {
+            btAdapter.desconectarSocket(btSocket);
+            menu.findItem(R.id.idBleConectar).setVisible(true);
+            menu.findItem(R.id.idBleDesconectar).setVisible(false);
+            Toast.makeText(context, "Dispositivo Desconectado", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -203,6 +228,7 @@ public class UserInterfazFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
     private void setearTextoVista(String datos, int i) {
         // EnviarInformacion(String timer, String distanciaLeft, String distanciaRight, String distanciaFront, char ledLeft, char ledRight, char ledFront )
         switch (i){
@@ -213,6 +239,19 @@ public class UserInterfazFragment extends Fragment {
             case 5: setearLed(datos,1); break;
             case 6: setearLed(datos,2); break;
             case 7: setearLed(datos,3); break;
+            case 8: stop(datos); break;
+            case 9: chicharra(datos); break;
+        }
+    }
+
+    private void chicharra(String datos) {
+        //Hacer sonar la bocina
+    }
+
+
+    private void stop(String datos) {
+        if (datos.equals("1")){
+            guardarRegistro();
         }
     }
 
@@ -225,28 +264,36 @@ public class UserInterfazFragment extends Fragment {
         }
         if(datos.equals("1")){
             //Prendo el Led
-            led.setImageResource(R.drawable.led_off);
+            led.setImageResource(R.drawable.led_on);
         } else {
             //Apago el Led
-            led.setImageResource(R.drawable.led_on);
+            led.setImageResource(R.drawable.led_off);
         }
     }
 
     private void setearTimer(String datos) {
-        String minutos = datos.substring(0,1);
-        String segundos = datos.substring(2,3);
+        String minutos = datos.substring(0,2);
+        String segundos = datos.substring(2,4);
         String tiempo=minutos+":"+segundos;
         timer.setText(tiempo);
     }
 
     private void ConectarConDispositivo( BluetoothDevice device) {
-        btSocket = btAdapter.conectarSocket(device);
-        if (btSocket!=null) {
-            MyConexionBT = new UserInterfazFragment.ConnectedThread(btSocket);
-            MyConexionBT.start();
-        } else{
-            Toast.makeText(context, "Fallo la conexion del socket", Toast.LENGTH_SHORT).show();
-        }
+        if (device != null) {
+
+            btSocket = btAdapter.conectarSocket(device);
+            if (btSocket != null) {
+                MyConexionBT = new UserInterfazFragment.ConnectedThread(btSocket);
+                MyConexionBT.start();
+                menu.findItem(R.id.idBleConectar).setVisible(false);
+                menu.findItem(R.id.idBleDesconectar).setVisible(true);
+                Toast.makeText(context, "Dispositivo Conectado", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(context, "Fallo la conexion del socket", Toast.LENGTH_SHORT).show();
+            }
+        } else
+            Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
     }
 
     private BluetoothDevice recuperarDispositivo() {
@@ -265,18 +312,9 @@ public class UserInterfazFragment extends Fragment {
             return null;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (device != null)
-            ConectarConDispositivo(device);
-        else
-            Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
-    }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void GuardarRegistro(View view){
+
+    public void guardarRegistro(){
         //instancio la bd
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(context);
 
@@ -302,16 +340,14 @@ public class UserInterfazFragment extends Fragment {
         db.close();
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     private String obtenerHora() {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return hourFormat.format(date);
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     private String obtenerFecha() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
@@ -322,16 +358,25 @@ public class UserInterfazFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        this.menu=menu;
         inflater.inflate(R.menu.user_interfaz_menu,menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        if (device != null)
-            ConectarConDispositivo(device);
-        else
-            Toast.makeText(context, "No se pudo recuperar el dispositivo", Toast.LENGTH_SHORT).show();
+        switch (id){
+            case R.id.idBleConectar:
+                ConectarConDispositivo(device);
+
+                break;
+            case R.id.idBleDesconectar:
+                desconectarDispositivo();
+
+                break;
+        }
+
 
         return super.onOptionsItemSelected(item);
 

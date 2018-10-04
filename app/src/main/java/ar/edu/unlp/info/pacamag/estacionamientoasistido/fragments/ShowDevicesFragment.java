@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -14,7 +15,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -58,6 +62,9 @@ public class ShowDevicesFragment extends Fragment {
     IntentFilter filter;
     IComunicacionFragment interfazcComunicacionFragment;
     View vista;
+    ProgressBar progressBar;
+    private ObjectAnimator anim;
+    LinearLayout showDeviceLayout;
 
 
     public ShowDevicesFragment() {
@@ -111,6 +118,9 @@ public class ShowDevicesFragment extends Fragment {
         configurarRecycler();
 
         filter= new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        showDeviceLayout = vista.findViewById(R.id.idShowDevicesLayout);
+        progressBar=vista.findViewById(R.id.idProgressBar);
+        anim = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
         return vista;
     }
 
@@ -168,7 +178,7 @@ public class ShowDevicesFragment extends Fragment {
             public void onClick(View view) {
                 btAdapter.getAdapter().cancelDiscovery();
                 DeviceItem devItem = deviceItemList.get(recyclerDevice.getChildAdapterPosition(view));
-                Toast.makeText(context, "Seleccion: " +devItem.getNombreDispositivo() , Toast.LENGTH_SHORT).show();
+                mostrarProgress();
                 interfazcComunicacionFragment.enviarMAC(devItem.getDireccionDispositivo());
             }
         });
@@ -220,5 +230,17 @@ public class ShowDevicesFragment extends Fragment {
             }
         }
     };
+
+    private void mostrarProgress(){
+        //agregamos el tiempo de la animacion a mostrar
+        showDeviceLayout.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+
+
+        anim.setDuration(15000);
+        anim.setInterpolator(new DecelerateInterpolator());
+        //iniciamos el progressbar
+        anim.start();
+    }
 
 }

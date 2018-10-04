@@ -18,12 +18,12 @@ public class Utilidades {
     // CONSULTAS
 
     public static final String RECUPERAR_REGISTROS_ORDER_BY_TIEMPO =
-            "select "+ REGISTRO_FECHA + " , " + REGISTRO_HORA + " , " + REGISTRO_TIEMPO +
+            "select "+ REGISTRO_TIEMPO+ " , " + REGISTRO_FECHA  + " , " + REGISTRO_HORA +
             " from " + TABLA_REGISTRO +
             " order by " + REGISTRO_TIEMPO;
 
     public static final String RECUPERAR_REGISTROS_ORDER_BY_FECHA =
-            "select "+ REGISTRO_FECHA + " , " + REGISTRO_HORA + " , " + REGISTRO_TIEMPO +
+            "select "+ REGISTRO_TIEMPO+ " , " + REGISTRO_FECHA  + " , " + REGISTRO_HORA +
             " from " + TABLA_REGISTRO +
             " order by " + REGISTRO_FECHA + " , " + REGISTRO_HORA;
 }
