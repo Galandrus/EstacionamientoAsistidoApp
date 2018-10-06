@@ -4,10 +4,10 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
+
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.ClipData;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,8 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +37,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
-import ar.edu.unlp.info.pacamag.estacionamientoasistido.actividades.MainActivity;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.bluetooth.BTAdapter;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
@@ -149,24 +146,14 @@ public class UserInterfazFragment extends Fragment {
                 if (msg.what == handlerState) {
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage); //Obtiene el mensaje
-                    int endOfLineIndex = recDataString.indexOf("\n"); // Determina el final de linea
+                    int endOfLineIndex = recDataString.indexOf("#"); // Determina el final de linea
                     if (endOfLineIndex > 0) {                                           // Se asegura que haya un mensaje
-                        String dataInPrint = recDataString.substring(0, endOfLineIndex);    // Extrae el string
-                        char[] arreglo = dataInPrint.toCharArray();
-                        //if(arreglo.equals("o"))
-                           // ledFront.setImageResource(R.drawable.led_on);
-                        String datos="";
-                        int index = 1;
-                        for (int i=0;i<dataInPrint.length();i++){
-                            if(arreglo[i] !='#'){
-                                datos+=arreglo[i];
-                            } else {
-                                setearTextoVista(datos, index++);
-                                datos="";
-                            }
-                        }
-                        recDataString.delete(0, recDataString.length());      //clear all string data
+                        String dataInPrint = recDataString.substring(1, endOfLineIndex);    // Extrae el string de datos
+                        char index = recDataString.charAt(0);
+
+                        setearTextoVista(dataInPrint, index );
                     }
+                    recDataString.delete(0, endOfLineIndex+1);      //clear all string data
                 }
             }
         };
@@ -229,18 +216,20 @@ public class UserInterfazFragment extends Fragment {
     }
 
 
-    private void setearTextoVista(String datos, int i) {
-        // EnviarInformacion(String timer, String distanciaLeft, String distanciaRight, String distanciaFront, char ledLeft, char ledRight, char ledFront )
-        switch (i){
-            case 1: setearTimer(datos); break;
-            case 2: distanciaLeft.setText(datos); break;
-            case 3: distanciaRight.setText(datos); break;
-            case 4: distanciaFront.setText(datos); break;
-            case 5: setearLed(datos,1); break;
-            case 6: setearLed(datos,2); break;
-            case 7: setearLed(datos,3); break;
-            case 8: stop(datos); break;
-            case 9: chicharra(datos); break;
+    private void setearTextoVista(String datos, char index) {
+        switch (index){
+            case '1': setearTimer(datos); break;
+            case '2': distanciaLeft.setText(datos); break;
+            case '3': distanciaRight.setText(datos); break;
+            case '4': distanciaFront.setText(datos); break;
+            case '5': setearLed(datos,1); break;
+            case '6': setearLed(datos,2); break;
+            case '7': setearLed(datos,3); break;
+            case '8': stop(datos); break;
+            case '9': chicharra(datos); break;
+            default:
+                Toast.makeText(context, "Index Incorrecto", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
