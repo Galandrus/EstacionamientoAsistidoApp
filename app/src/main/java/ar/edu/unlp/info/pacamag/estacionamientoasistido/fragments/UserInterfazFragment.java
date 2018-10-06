@@ -12,6 +12,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ import java.util.Locale;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.bluetooth.BTAdapter;
+import ar.edu.unlp.info.pacamag.estacionamientoasistido.sonido.ReproductorAdapter;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
 
@@ -65,11 +69,8 @@ public class UserInterfazFragment extends Fragment {
 
     // TODO: Mis parametros
     TextView timer, distanciaLeft, distanciaRight, distanciaFront;
-    ImageView ledLeft, ledRight, ledFront;
-
-    MenuItem btIcon,btIconConectado;
-
-
+    ImageView ledLeft, ledRight, ledFront, parlante;
+    Button BORRAR;
 
     private BTAdapter btAdapter;
     private BluetoothSocket btSocket;
@@ -82,6 +83,8 @@ public class UserInterfazFragment extends Fragment {
     private Activity activity;
     private Context context;
     private Menu menu;
+    private MediaPlayer mediaPlayer;
+    private boolean esLaPrimeraVezQueSuena;
 
     public UserInterfazFragment() {
         // Required empty public constructor
@@ -131,8 +134,10 @@ public class UserInterfazFragment extends Fragment {
         ledLeft=vista.findViewById(R.id.idLedLeftImagen);
         ledRight=vista.findViewById(R.id.idLedRightImagen);
         ledFront=vista.findViewById(R.id.idLedFrontImagen);
+        parlante = vista.findViewById(R.id.idParlante);
         setHasOptionsMenu(true);
 
+        esLaPrimeraVezQueSuena = true;
 
         btAdapter = new BTAdapter();
         device = recuperarDispositivo();
@@ -188,6 +193,8 @@ public class UserInterfazFragment extends Fragment {
         super.onDetach();
         mListener = null;
         desconectarDispositivo();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 
     private void desconectarDispositivo() {
@@ -222,9 +229,9 @@ public class UserInterfazFragment extends Fragment {
             case '2': distanciaLeft.setText(datos); break;
             case '3': distanciaRight.setText(datos); break;
             case '4': distanciaFront.setText(datos); break;
-            case '5': setearLed(datos,1); break;
-            case '6': setearLed(datos,2); break;
-            case '7': setearLed(datos,3); break;
+            case '5': setearLed(datos, ledLeft); break;
+            case '6': setearLed(datos,ledRight); break;
+            case '7': setearLed(datos,ledFront); break;
             case '8': stop(datos); break;
             case '9': chicharra(datos); break;
             default:
@@ -235,6 +242,46 @@ public class UserInterfazFragment extends Fragment {
 
     private void chicharra(String datos) {
         //Hacer sonar la bocina
+        int sonido=0;
+        switch (datos){
+            case "1":
+                sonido=R.raw.freq1;
+                break;
+            case "2":
+                sonido=R.raw.freq2;
+                break;
+            case "3":
+                sonido=R.raw.freq3;
+                break;
+            case "4":
+                sonido=R.raw.freq4;
+                break;
+            case "5":
+                sonido=0;
+        }
+
+        if (sonido != 0) {
+            if (!esLaPrimeraVezQueSuena)
+                DetenerSonido();
+            else
+                esLaPrimeraVezQueSuena = false;
+            ReproducirSonido(sonido);
+        }else{
+            DetenerSonido();
+        }
+
+    }
+
+    private void ReproducirSonido(int sonido) {
+        parlante.setVisibility(View.VISIBLE);
+        mediaPlayer = MediaPlayer.create(context, sonido);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+}
+    private void DetenerSonido(){
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        parlante.setVisibility(View.INVISIBLE);
     }
 
 
@@ -244,13 +291,7 @@ public class UserInterfazFragment extends Fragment {
         }
     }
 
-    private void setearLed(String datos, int i) {
-        ImageView led = null;
-        switch (i){
-            case 1: led = ledLeft; break;
-            case 2: led = ledRight; break;
-            case 3: led = ledFront; break;
-        }
+    private void setearLed(String datos, ImageView led) {
         if(datos.equals("1")){
             //Prendo el Led
             led.setImageResource(R.drawable.led_on);

@@ -90,7 +90,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio1/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_bluetooth_connected_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio1/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_volume_up_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -100,9 +100,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="4ea625" />
+                            <entry key="color" value="477317" />
                             <entry key="opacityPercent" value="89" />
-                            <entry key="outputName" value="ic_bluetooth_connected_true" />
+                            <entry key="outputName" value="ic_volume" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Martin" />
                           </map>
