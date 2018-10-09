@@ -1,6 +1,5 @@
 package ar.edu.unlp.info.pacamag.estacionamientoasistido.fragments;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,7 +11,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -26,9 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +37,6 @@ import java.util.Locale;
 
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.R;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.bluetooth.BTAdapter;
-import ar.edu.unlp.info.pacamag.estacionamientoasistido.sonido.ReproductorAdapter;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.ConexionSQLiteHelper;
 import ar.edu.unlp.info.pacamag.estacionamientoasistido.sqlite.Utilidades;
 
@@ -70,7 +65,7 @@ public class UserInterfazFragment extends Fragment {
     // TODO: Mis parametros
     TextView timer, distanciaLeft, distanciaRight, distanciaFront;
     ImageView ledLeft, ledRight, ledFront, parlante;
-    Button BORRAR;
+
 
     private BTAdapter btAdapter;
     private BluetoothSocket btSocket;
@@ -165,6 +160,7 @@ public class UserInterfazFragment extends Fragment {
 /////////////////////////////////////////////////////////////////////////////////////
         // Inflate the layout for this fragment
 
+
         return vista;
     }
 
@@ -193,8 +189,10 @@ public class UserInterfazFragment extends Fragment {
         super.onDetach();
         mListener = null;
         desconectarDispositivo();
-        mediaPlayer.stop();
-        mediaPlayer.release();
+       if (!esLaPrimeraVezQueSuena) {
+           mediaPlayer.stop();
+           mediaPlayer.release();
+       }
     }
 
     private void desconectarDispositivo() {

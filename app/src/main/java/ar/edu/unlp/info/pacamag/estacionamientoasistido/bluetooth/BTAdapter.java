@@ -58,6 +58,8 @@ public class BTAdapter {
                 DeviceItem newDevice= new DeviceItem(device.getName(),device.getAddress(),"false");
                 deviceItemList.add(newDevice);
             }
+        } else {
+            deviceItemList.add(new DeviceItem("Active el Bluetooth","","false"));
         }
     }
 

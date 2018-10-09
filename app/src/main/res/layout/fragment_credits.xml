@@ -33,13 +33,6 @@
             android:layout_gravity="center"
             style="@style/creditosNombre"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/descMartin"
-                android:layout_gravity="center"
-                style="@style/creditosDesc"/>
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
@@ -69,13 +62,6 @@
                 android:layout_gravity="center"
                 style="@style/creditosNombre"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/descCharo"
-                android:layout_gravity="center"
-                style="@style/creditosDesc"/>
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
@@ -104,13 +90,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/nombrePabba" />
-
-            <TextView
-                style="@style/creditosDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/descPabba" />
 
 
         </LinearLayout>
